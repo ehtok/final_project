@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title th:text="#{title.search.company.page}"></title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-expand bg-primary">
+    <a class="navbar-brand" th:href="@{/}" th:text="#{button.main.page}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/company}" th:text="#{button.company.list}"></a>
+            <a class="nav-item nav-link" th:href="@{/vacancy}" th:text="#{button.vacancy.list}"></a>
+            <a class="nav-item nav-link" th:href="@{/course}" th:text="#{button.course.list}"></a>
+            <a class="nav-item nav-link" th:href="@{/technology}" th:text="#{button.technology.list}"></a>
+        </div>
+    </div>
+</nav>
+<form th:action="@{/company/search}" th:object="${company}" method="post" autocomplete="off">
+    <div>
+        <label th:text="#{col.company.name}"/>
+        <input type="text" class="form-control mb-4 col-4" th:field="*{name}">
+    </div>
+    <button type="submit" class="btn btn-info col-2" th:text="#{button.find}"></button>
+
+</form>
+
+
+<div class="form-group has-success has-feedback" th:object="${company}" th:if="${company.id}">
+    <center>
+        <label th:text="#{col.company.name}"/>
+        <p th:text="${company.name}"/>
+        <label th:text="#{col.company.size}"/>
+        <p th:text="${company.companySize}"/>
+        <label th:text="#{col.company.type}"/>
+        <p th:text="${company.companyType}"/>
+        <label th:text="#{col.company.description}"/>
+        <p th:text="${company.description}"/>
+        <label th:text="#{col.company.vacancies}"/>
+        <p th:if="${company.vacancy.isEmpty()}" th:text="#{col.vacancy.empty}"></p>
+        <p th:text="${company.vacancy}" th:if="${company.vacancy}"/>
+        <label th:text="#{col.company.course}"/>
+        <p th:if="${company.course.isEmpty()}" th:text="#{col.course.empty}"></p>
+        <p th:text="${company.course}"/>
+    </center>
+</div>
+<div>
+    <a class="btn btn-outline-primary" th:href="@{'?locale=en_US'}" th:text="#{lang.en}"></a>
+    <a class="btn btn-outline-primary" th:href="@{'?locale=ru_RU'}" th:text="#{lang.ru}"></a>
+</div>
+</body>
+</html>

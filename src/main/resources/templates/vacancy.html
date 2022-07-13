@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <meta charset="utf-8"/>
+    <title th:text="#{button.vacancy.list}"></title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-expand bg-primary">
+    <a class="navbar-brand" th:href="@{/}" th:text="#{button.main.page}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/company}" th:text="#{button.company.list}"></a>
+            <a class="nav-item nav-link" th:href="@{/vacancy}" th:text="#{button.vacancy.list}"></a>
+            <a class="nav-item nav-link" th:href="@{/course}" th:text="#{button.course.list}"></a>
+            <a class="nav-item nav-link" th:href="@{/technology}" th:text="#{button.technology.list}"></a>
+        </div>
+    </div>
+</nav>
+<div>
+    <center>
+        <a class="btn btn-outline-info" th:href="@{/vacancy/search}" th:text="#{button.find.vacancy}"></a>
+    </center>
+</div>
+
+<div align="center">
+    <h1 th:text="#{button.vacancy.list}"></h1>
+    <br/><br/>
+    <table class="table">
+        <thead class="table-light">
+        <tr>
+            <th scope="col"><a
+                    th:href="@{'/vacancy?page='+${currentPage}+'&sortField=name&sortDir=' + ${reverseSortDir} }"
+                    th:text="#{col.vacancy.name}"></a>
+            </th>
+            <th scope="col" th:text="#{col.vacancy.status}"></th>
+            <th scope="col"><a
+                    th:href="@{'/vacancy?page='+${currentPage}+'&sortField=location&sortDir=' + ${reverseSortDir} }"
+                    th:text="#{col.vacancy.location}"></a>
+            </th>
+            <th scope="col" th:text="#{col.vacancy.work.time}"></th>
+            <th scope="col" th:text="#{col.vacancy.experience}"></th>
+            <th scope="col"><a
+                    th:href="@{'/vacancy?page='+${currentPage}+'&sortField=salary&sortDir=' + ${reverseSortDir} }"
+                    th:text="#{col.vacancy.salary}"></a>
+            </th>
+            <th scope="col" th:text="#{col.vacancy.prof.lvl}"></th>
+            <th scope="col" th:text="#{col.vacancy.english}"></th>
+            <th scope="col"><a
+                    th:href="@{'/vacancy?page='+${currentPage}+'&sortField=company&sortDir=' + ${reverseSortDir} }"
+                    th:text="#{col.vacancy.company}"></a>
+            </th>
+            <th scope="col" th:text="#{col.action}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vacancy:${vacancies}">
+            <td th:text="${vacancy.name}"></td>
+            <td th:text="${vacancy.status}"></td>
+            <td th:text="${vacancy.location}"></td>
+            <td th:text="${vacancy.workingTime}"></td>
+            <td th:text="${vacancy.experience}"></td>
+            <td th:text="${vacancy.salary}"></td>
+            <td th:text="${vacancy.professionLevel}"></td>
+            <td th:text="${vacancy.englishLevel}"></td>
+            <td th:text="${vacancy.companyName}">
+            </td>
+            <td>
+                <a th:href="@{/vacancy/update/{id}(id=${vacancy.id})}" class="btn btn-outline-primary"
+                   th:text="#{button.edit}"></a>
+                <a th:href="@{/vacancy/delete/{id}(id=${vacancy.id})}" class="btn btn-outline-primary"
+                   th:text="#{button.delete}"></a>
+                <a th:href="@{/vacancy/info/{id} (id=${vacancy.id})}" class="btn btn-outline-primary"
+                   th:text="#{button.info}"></a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<footer class="panel-footer">
+    <nav aria-label="Page navigation example">
+        Total vacancy [[${totalElement}]]: Page [[${currentPage}]] of [[${totalPage}]]
+        <ul class="pagination">
+
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/vacancy?page=1&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                   th:text="#{button.page.first}"></a>
+                <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.first}"></span>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/vacancy?page=' + ${currentPage - 1}
+                   +'?sortField='+${sortField}+'&sortDir=' + ${sortDir}}" th:text="#{button.page.previous}"></a>
+                <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.previous}"></span>
+            </li>
+
+            <li class="page-link">
+                    <span th:each="i :${#numbers.sequence(1,totalPage)}">
+                    <a th:href="@{'/vacancy?page=' + ${i}+ '&sortField='+${sortField}+'&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                    </span>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage < totalPage}"
+                   th:href="@{'/vacancy?page='+${currentPage + 1}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                   th:text="#{button.page.next}"></a>
+                <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.next}"></span>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage < totalPage}"
+                   th:href="@{'/vacancy?page='+${totalPage}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                   th:text="#{button.page.last}"></a>
+                <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.last}"></span>
+            </li>
+        </ul>
+    </nav>
+</footer>
+<div>
+    <a class="btn btn-outline-primary" th:href="@{'?locale=en_US'}" th:text="#{lang.en}"></a>
+    <a class="btn btn-outline-primary" th:href="@{'?locale=ru_RU'}" th:text="#{lang.ru}"></a>
+</div>
+</body>
+</html>
