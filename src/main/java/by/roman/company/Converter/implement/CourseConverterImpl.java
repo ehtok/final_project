@@ -19,7 +19,7 @@ public class CourseConverterImpl implements Converter<Course, CourseDTO> {
                 .dateStart(String.valueOf(course.getDateStart()))
                 .dateFinish(String.valueOf(course.getDateFinish()))
                 .description(course.getDescription())
-                .location(course.getLocation().getName())
+                .location(course.getLocation().getValue())
                 .companyName(course.getCompany() == null ? null : course.getCompany().getName())
                 .build();
         return courseDTO;

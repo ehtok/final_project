@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
@@ -22,51 +22,71 @@
         </div>
     </div>
 </nav>
-
-<div>
+</br>
+<div class="row">
     <center>
-        <a class="btn btn-outline-info" th:href="@{/company/new}" th:text="#{title.create.company}"></a>
-        <a class="btn btn-outline-info" th:href="@{/company/search}" th:text="#{button.find.company}"></a>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <form th:action="@{/company}" method="get">
+                <div class="col-sm-4">
+                    <input class="form-control" th:placeholder="#{input.enter.company}" type="text" name="companyName">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary" type="submit"
+                            th:text="#{button.find.company}"></button>
+                    <a class="btn btn-outline-primary" th:href="@{/company}" th:text="#{button.clear}"></a>
+                </div>
+            </form>
+        </div>
     </center>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <a class="btn btn-outline-primary" th:href="@{/company/new}" th:text="#{title.create.company}"></a>
+        </div>
+
 </div>
 <div align="center">
-    <h1 th:text="#{button.company.list}"></h1>
-    <br/><br/>
+    <h3 th:text="#{button.company.list}"></h3>
     <table class="table">
         <thead class="table-light">
         <tr>
             <th scope="col"><a
-                    th:href="@{'/company?page='+${currentPage}+'&sortField=name&sortDir=' + ${reverseSortDir} }"
+                    th:href="@{'/company?companyName='+${companyName}+'&page='+${currentPage}+'&sortField=name&sortDir=' + ${reverseSortDir} }"
                     th:text="#{col.company.name}"></a>
             </th>
             <th scope="col"><a
-                    th:href="@{'/company?page='+${currentPage}+'&sortField=companySize&sortDir=' + ${reverseSortDir} }"
+                    th:href="@{'/company?companyName='+${companyName}+'&page='+${currentPage}+'&sortField=companySize&sortDir=' + ${reverseSortDir} }"
                     th:text="#{col.company.size}"></a>
             </th>
-            <th scope="col"><a
-                    th:href="@{'/company?page='+${currentPage}+'&sortField=companyType&sortDir=' + ${reverseSortDir} }"
-                    th:text="#{col.company.type}"></a>
+            <th scope="col" th:text="#{col.company.type}">
             </th>
-            <th scope="col" th:text="#{col.company.description}"></th>
-            <th scope="col" th:text="#{col.action}"></th>
+            <th scope="col" th:text="#{col.company.site}"></th>
+            <th scope="col" th:text="#{col.action}">
+            </th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="company :${companies}">
-            <td th:text="${company.name}"></td>
+            <td>
+                <a th:href="@{/company/info/{id} (id=${company.id})}"
+                   th:text="${company.name}"></a>
+            </td>
             <td th:text="${company.companySize}"></td>
-            <td th:text="${company.companyType}"></td>
-            <td th:text="${company.description}"></td>
+            <td th:text="${company.companyType.value}"></td>
+            <td>
+                <a th:href="${company.site}" th:text="${company.site}"></a>
+            </td>
             <td>
                 <a th:href="@{/company/update/{id}(id=${company.id})}" class="btn btn-outline-primary"
                    th:text="#{button.edit}"></a>
                 <a th:href="@{/company/delete/{id}(id=${company.id})}" class="btn btn-outline-primary"
                    th:text="#{button.delete}"></a>
-                <a th:href="@{/vacancy/new}" class="btn btn-outline-primary"
+                <a th:href="@{/vacancy/new/{id}(id=${company.id})}" class="btn btn-outline-primary"
                    th:text="#{button.create.vacancy}">
                 </a>
                 <a class="btn btn-outline-primary" th:href="@{/course/new/{id}(id=${company.id})}"
                    th:text="#{title.create.course}"></a>
+
+                <a class="btn btn-outline-primary" th:href="@{/company/bla/{id}(id=${company.id})}"
+                >qw e</a>
             </td>
         </tr>
         </tbody>
@@ -75,46 +95,47 @@
 
 
 <footer class="panel-footer">
-    <nav aria-label="Page navigation example">
-        Total company [[${totalElement}]]: Page [[${currentPage}]] of [[${totalPage}]]
-        <ul class="pagination">
+    <center>
+        <nav aria-label="Page navigation example">
+            Total company [[${totalElement}]]: Page [[${currentPage}]] of [[${totalPage}]]
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage > 1}"
+                       th:href="@{'/company?companyName='+${companyName}+'&page=1&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                       th:text="#{button.page.first}"></a>
+                    <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.first}"></span>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/company?page=1&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
-                   th:text="#{button.page.first}"></a>
-                <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.first}"></span>
-            </li>
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage > 1}"
+                       th:href="@{'/company?companyName='+${companyName}+'&page=' + ${currentPage - 1}
+                   +'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}" th:text="#{button.page.previous}"></a>
+                    <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.previous}"></span>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/company?page=' + ${currentPage - 1}
-                   +'?sortField='+${sortField}+'&sortDir=' + ${sortDir}}" th:text="#{button.page.previous}"></a>
-                <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.previous}"></span>
-            </li>
-
-            <li class="page-link">
+                <li class="page-link">
                     <span th:each="i :${#numbers.sequence(1,totalPage)}">
-                    <a th:href="@{'/company?page=' + ${i}+
+                    <a th:href="@{'/company?companyName='+${companyName}+'&page=' + ${i}+
                      '&sortField='+${sortField}+'&sortDir=' + ${sortDir}}">[[${i}]]</a>
                     </span>
-            </li>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage < totalPage}"
-                   th:href="@{'/company?page='+${currentPage + 1}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
-                   th:text="#{button.page.next}"></a>
-                <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.next}"></span>
-            </li>
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage < totalPage}"
+                       th:href="@{'/company?companyName='+${companyName}+'&page='+${currentPage + 1}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                       th:text="#{button.page.next}"></a>
+                    <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.next}"></span>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage < totalPage}"
-                   th:href="@{'/company?page='+${totalPage}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
-                   th:text="#{button.page.last}"></a>
-                <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.last}"></span>
-            </li>
-        </ul>
-    </nav>
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage < totalPage}"
+                       th:href="@{'/company?companyName='+${companyName}+'&page='+${totalPage}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                       th:text="#{button.page.last}"></a>
+                    <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.last}"></span>
+                </li>
+            </ul>
+        </nav>
+    </center>
 </footer>
 <div>
     <a class="btn btn-outline-primary" th:href="@{'?locale=en_US'}" th:text="#{lang.en}"></a>

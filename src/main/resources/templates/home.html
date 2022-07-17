@@ -22,11 +22,22 @@
             <a class="nav-item nav-link" th:href="@{/technology}" th:text="#{button.technology.list}"></a>
         </div>
     </div>
+
+    <div>
+        <a class="nav-item nav-link" th:href="@{/login}"
+           th:text="#{title.login.page}"></a>
+    </div>
+
+<!--    <form th:action="@{/logout}" method="post">-->
+<!--        <a class="nav-item nav-link" th:text="#{button.logout}"></a>-->
+<!--    </form>-->
+
 </nav>
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+
+<!--<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
+<!--<form th:action="@{/logout}" method="post">-->
+<!--    <input type="submit" value="Sign Out"/>-->
+<!--</form>-->
 <div>
     <a class="btn btn-outline-primary" th:href="@{'?locale=en_US'}" th:text="#{lang.en}"></a>
     <a class="btn btn-outline-primary" th:href="@{'?locale=ru_RU'}" th:text="#{lang.ru}"></a>

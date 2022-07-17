@@ -4,10 +4,6 @@ import by.roman.company.Converter.Converter;
 import by.roman.company.DTO.VacancyDTO;
 import by.roman.company.Entity.Technology;
 import by.roman.company.Entity.Vacancy;
-import by.roman.company.Enum.EnglishLevelEnum;
-import by.roman.company.Enum.ProfLevelEnum;
-import by.roman.company.Enum.StatusEnum;
-import by.roman.company.Enum.WorkingTimeEnum;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,15 +15,16 @@ public class VacancyConverterImpl implements Converter<Vacancy, VacancyDTO> {
         VacancyDTO vacancyDTO = VacancyDTO.builder()
                 .id(vacancy.getId())
                 .name(vacancy.getName())
-                .workingTime(vacancy.getWorkingTime().getName())
+                .workingTime(vacancy.getWorkingTime())
                 .experience(vacancy.getExperience())
-                .englishLevel(vacancy.getEnglishLevel().getName())
-                .professionLevel(vacancy.getProfessionLevel().getName())
+                .englishLevel(vacancy.getEnglishLevel())
+                .professionLevel(vacancy.getProfessionLevel())
                 .salary(vacancy.getSalary())
-                .status(vacancy.getStatus().getName())
+                .status(vacancy.getStatus())
                 .companyName(vacancy.getCompany() == null ? null : vacancy.getCompany().getName())
                 .technology(vacancy.getTechnologies().stream().map(Technology::getName).collect(Collectors.joining(",")))
                 .location(vacancy.getLocation())
+                .technologies(vacancy.getTechnologies())
                 .build();
         return vacancyDTO;
     }
@@ -44,14 +41,16 @@ public class VacancyConverterImpl implements Converter<Vacancy, VacancyDTO> {
         Vacancy vacancy = Vacancy.builder()
                 .id(vacancyDTO.getId())
                 .name(vacancyDTO.getName())
-                .workingTime(WorkingTimeEnum.valueOf(vacancyDTO.getWorkingTime()))
+                .workingTime(vacancyDTO.getWorkingTime())
                 .experience(vacancyDTO.getExperience())
-                .englishLevel(EnglishLevelEnum.valueOf(vacancyDTO.getEnglishLevel()))
-                .professionLevel(ProfLevelEnum.valueOf(vacancyDTO.getProfessionLevel()))
+                .englishLevel(vacancyDTO.getEnglishLevel())
+//                .professionLevel(ProfLevelEnum.fromString(vacancyDTO.getProfessionLevel().name()))
+                .professionLevel(vacancyDTO.getProfessionLevel())
                 .salary(vacancyDTO.getSalary())
-                .status(StatusEnum.valueOf(vacancyDTO.getStatus()))
+                .status(vacancyDTO.getStatus())
                 .location(vacancyDTO.getLocation())
                 .company(vacancyDTO.getCompany())
+                .technologies(vacancyDTO.getTechnologies())
                 .build();
         return vacancy;
     }

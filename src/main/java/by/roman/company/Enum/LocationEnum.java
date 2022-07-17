@@ -4,16 +4,16 @@ import lombok.Getter;
 
 @Getter
 public enum LocationEnum {
-    MINSK("Minsk"),
-    GRODNO("Grodno"),
-    VITEBSK("Vitebsk"),
-    MOGILEV("Mogilev"),
-    BREST("Brest"),
-    GOMEL("Gomel");
+    MINSK("Минск"),
+    GRODNO("Гродно"),
+    VITEBSK("Витебск"),
+    MOGILEV("Могилев"),
+    BREST("Брест"),
+    GOMEL("Гомель");
 
-    private final String name;
+    private final String value;
 
     LocationEnum(String name) {
-        this.name = name;
+        this.value = name;
     }
 }

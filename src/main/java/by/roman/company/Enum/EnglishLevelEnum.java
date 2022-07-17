@@ -11,9 +11,9 @@ public enum EnglishLevelEnum {
     C1("C1"),
     C2("C2");
 
-    private final String name;
+    private final String value;
 
     EnglishLevelEnum(String name) {
-        this.name = name;
+        this.value = name;
     }
 }

@@ -34,7 +34,7 @@
             <label class="form-label" th:text="#{col.vacancy.status}"/>
             <select class="form-select" th:field="*{status}">
                 <option th:each="type: ${status}"
-                        th:text="${type.name}"
+                        th:text="${type.value}"
                         th:value="${type}">
                 </option>
             </select>
@@ -44,7 +44,7 @@
             <label class="form-label" th:text="#{col.vacancy.work.time}"/>
             <select class="form-select" th:field="*{workingTime}">
                 <option th:each="time: ${workingTime}"
-                        th:text="${time.name}"
+                        th:text="${time.value}"
                         th:value="${time}">
                 </option>
             </select>
@@ -53,25 +53,34 @@
         <div class="form-label">
             <label class="form-label" th:text="#{col.vacancy.prof.lvl}"/>
             <select class="form-select" th:field="*{professionLevel}">
-                <option th:each="prof : ${professionLevel}"
-                        th:text="${prof.name}"
+                <option
+                        th:each="prof : ${professionLevel}"
+                        th:text="${prof.value}"
                         th:value="${prof}">
                 </option>
             </select>
         </div>
 
-        <div class="form-label">
+
+        <div class="col-sm-8">
             <label class="form-label" th:text="#{col.vacancy.english}"/>
             <select class="form-select" th:field="*{englishLevel}">
-                <option th:each="english:${englishLevel}"
-                        th:text="${english.name}"
-                        th:value="${english}">
+                <option th:each="eng:${english}"
+                        th:text="${eng.value}"
+                        th:value="${eng}">
                 </option>
             </select>
         </div>
 
-        <label class="form-label" th:text="#{col.vacancy.location}"/>
-        <input type="text" class="form-control" th:field="*{location}"/>
+        <div>
+            <label class="col-form-label" th:text="#{col.course.location}"/>
+            <select class="form-select" th:field="*{location}">
+                <option th:each="loc: ${location}"
+                        th:text="${loc.value}"
+                        th:value="${loc}">
+                </option>
+            </select>
+        </div>
 
         <label class="form-label" th:text="#{col.vacancy.experience}"/>
         <input type="text" class="form-control" th:field="*{experience}"/>

@@ -1,9 +1,6 @@
 package by.roman.company.Entity;
 
-import by.roman.company.Enum.EnglishLevelEnum;
-import by.roman.company.Enum.ProfLevelEnum;
-import by.roman.company.Enum.StatusEnum;
-import by.roman.company.Enum.WorkingTimeEnum;
+import by.roman.company.Enum.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,7 +33,9 @@ public class Vacancy implements Serializable {
     private String experience;
 
     @Column(name = "vacancy_location")
-    private String location;
+    @Enumerated(value = EnumType.STRING)
+    private LocationEnum location;
+
 
     @Column(name = "english_level")
     @Enumerated(EnumType.STRING)
@@ -57,7 +56,7 @@ public class Vacancy implements Serializable {
     @JoinColumn(name = "company_id", updatable = false)
     private Company company;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "technology_vacancy",
             joinColumns = {@JoinColumn(name = "id_vacancy")},
             inverseJoinColumns = {@JoinColumn(name = "id_technology")})

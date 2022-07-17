@@ -11,7 +11,6 @@ public interface VacancyService {
 
     VacancyDTO findVacancyById(Integer id);
 
-    Vacancy updateVacancy(Integer id);
 
     void deleteVacancy(Integer id);
 

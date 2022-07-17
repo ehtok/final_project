@@ -29,8 +29,7 @@
 </div>
 
 <div align="center">
-    <h1 th:text="#{button.vacancy.list}"></h1>
-    <br/><br/>
+    <h3 th:text="#{button.vacancy.list}"></h3>
     <table class="table">
         <thead class="table-light">
         <tr>
@@ -61,13 +60,13 @@
         <tbody>
         <tr th:each="vacancy:${vacancies}">
             <td th:text="${vacancy.name}"></td>
-            <td th:text="${vacancy.status}"></td>
-            <td th:text="${vacancy.location}"></td>
-            <td th:text="${vacancy.workingTime}"></td>
+            <td th:text="${vacancy.status.value}"></td>
+            <td th:text="${vacancy.location.value}"></td>
+            <td th:text="${vacancy.workingTime.value}"></td>
             <td th:text="${vacancy.experience}"></td>
             <td th:text="${vacancy.salary}"></td>
-            <td th:text="${vacancy.professionLevel}"></td>
-            <td th:text="${vacancy.englishLevel}"></td>
+            <td th:text="${vacancy.professionLevel.value}"></td>
+            <td th:text="${vacancy.englishLevel.value}"></td>
             <td th:text="${vacancy.companyName}">
             </td>
             <td>

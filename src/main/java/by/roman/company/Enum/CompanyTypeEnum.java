@@ -8,9 +8,9 @@ public enum CompanyTypeEnum {
     STARTUP("Стартап"),
     OUTSOURCING("Аутсорсинг");
 
-    private final String name;
+    private final String value;
 
     CompanyTypeEnum(String name) {
-        this.name = name;
+        this.value = name;
     }
 }

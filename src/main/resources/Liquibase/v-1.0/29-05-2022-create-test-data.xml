@@ -7,10 +7,11 @@
 
     <changeSet id="6" author="Roman_Yaskevich" context="test">
         <sql>
-            insert into company(company_name, company_size, company_type, company_description)
-            values ('Soft', '200', 'PRODUCT', 'web service develop'),
-                   ('iTech', '150', 'STARTUP', 'Test case'),
-                   ('Digital', '50', 'OUTSOURCING', 'Develop web-site')
+            insert into company(company_name, company_site, company_mail, company_size, company_type,
+                                company_description)
+            values ('Soft', 'soft.com', 'soft@soft.com', '200', 'PRODUCT', 'web service develop'),
+                   ('iTech', 'iTech.by', 'iTech@tech.by', '150', 'STARTUP', 'Test case'),
+                   ('Digital', 'Digital.uk', 'digital@digital.uk', '50', 'OUTSOURCING', 'Develop web-site')
         </sql>
     </changeSet>
 
@@ -18,9 +19,9 @@
         <sql>
             insert into vacancy(vacancy_name, working_time, experience, english_level,
                                 profession_level, salary, status, vacancy_location, company_id)
-            values ('Java Developer', 'FULL', '2 years', 'B1', 'MIDDLE', '2000$', 'ACTIVE', 'Minsk', 1),
-                   ('C# Developer', 'REMOTE', '3 years', 'C1', 'JUNIOR', '1000$-2500$', 'ACTIVE', 'Minsk', 1),
-                   ('QA Engineer', 'PART', '1 years', 'C1', 'JUNIOR', '500$-2000$', 'OFF', 'Istambul', 2)
+            values ('Java Developer', 'FULL', '2 years', 'B1', 'MIDDLE', '2000$', 'ACTIVE', 'MINSK', 1),
+                   ('C# Developer', 'REMOTE', '3 years', 'C1', 'JUNIOR', '1000$-2500$', 'ACTIVE', 'GRODNO', 1),
+                   ('QA Engineer', 'PART', '1 years', 'C1', 'JUNIOR', '500$-2000$', 'OFF', 'VITEBSK', 2)
         </sql>
     </changeSet>
 

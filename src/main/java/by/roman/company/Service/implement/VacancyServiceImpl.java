@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static by.roman.company.Service.Constant.ONE;
@@ -26,8 +27,13 @@ public class VacancyServiceImpl implements VacancyService {
     private Converter<Vacancy, VacancyDTO> converter = new VacancyConverterImpl();
 
     @Override
+    @Transactional
     public Vacancy saveVacancy(VacancyDTO vacancy) {
-        return vacancyRepository.save(converter.toEntity(vacancy));
+        Vacancy entity = converter.toEntity(vacancy);
+        if (entity.getId() != null) {
+            entity.setTechnologies(vacancyRepository.getOne(vacancy.getId()).getTechnologies());
+        }
+        return vacancyRepository.save(entity);
     }
 
     @Override
@@ -35,10 +41,6 @@ public class VacancyServiceImpl implements VacancyService {
         return converter.toDTO(vacancyRepository.findById(id).orElse(null));
     }
 
-    @Override
-    public Vacancy updateVacancy(Integer id) {
-        return vacancyRepository.save(vacancyRepository.findById(id).orElse(null));
-    }
 
     @Override
     public void deleteVacancy(Integer id) {

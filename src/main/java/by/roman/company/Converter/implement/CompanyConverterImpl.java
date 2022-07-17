@@ -5,7 +5,6 @@ import by.roman.company.DTO.CompanyDTO;
 import by.roman.company.Entity.Company;
 import by.roman.company.Entity.Course;
 import by.roman.company.Entity.Vacancy;
-import by.roman.company.Enum.CompanyTypeEnum;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,15 +12,17 @@ import java.util.stream.Collectors;
 public class CompanyConverterImpl implements Converter<Company, CompanyDTO> {
 
     @Override
-    public CompanyDTO toDTO(Company entity) {
+    public CompanyDTO toDTO(Company company) {
         CompanyDTO companyDTO = CompanyDTO.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .companySize(entity.getCompanySize())
-                .companyType(entity.getCompanyType().getName())
-                .description(entity.getDescription())
-                .vacancy(entity.getVacancies().stream().map(Vacancy::getName).collect(Collectors.joining(" ,")))
-                .course(entity.getCourses().stream().map(Course::getName).collect(Collectors.joining(" ,")))
+                .id(company.getId())
+                .name(company.getName())
+                .companySize(company.getCompanySize())
+                .companyType(company.getCompanyType())
+                .description(company.getDescription())
+                .site(company.getSite())
+                .mail(company.getMail())
+                .vacancy(company.getVacancies().stream().map(Vacancy::getName).collect(Collectors.joining(" ,")))
+                .course(company.getCourses().stream().map(Course::getName).collect(Collectors.joining(" ,")))
                 .build();
         return companyDTO;
     }
@@ -41,8 +42,10 @@ public class CompanyConverterImpl implements Converter<Company, CompanyDTO> {
                 .id(companyDTO.getId())
                 .name(companyDTO.getName())
                 .companySize(companyDTO.getCompanySize())
-                .companyType(CompanyTypeEnum.valueOf(companyDTO.getCompanyType()))
+                .companyType(companyDTO.getCompanyType())
                 .description(companyDTO.getDescription())
+                .site(companyDTO.getSite())
+                .mail(companyDTO.getMail())
                 .build();
         return company;
     }

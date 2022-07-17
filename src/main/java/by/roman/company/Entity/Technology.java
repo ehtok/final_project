@@ -23,8 +23,7 @@ public class Technology implements Serializable {
     @Column(name = "technology_name")
     private String name;
 
-    @ManyToMany(mappedBy = "technologies", cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "technologies")
     private Set<Vacancy> vacancies = new HashSet<>();
 
 

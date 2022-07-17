@@ -27,6 +27,11 @@ public class Company implements Serializable {
     @Column(name = "company_size")
     private Integer companySize;
 
+    @Column(name = "company_site")
+    private String site;
+
+    @Column(name = "company_mail")
+    private String mail;
     @Column(name = "company_type")
     @Enumerated(EnumType.STRING)
     private CompanyTypeEnum companyType;

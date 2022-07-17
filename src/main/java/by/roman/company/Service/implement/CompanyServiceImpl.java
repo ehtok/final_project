@@ -4,7 +4,9 @@ import by.roman.company.Converter.Converter;
 import by.roman.company.Converter.implement.CompanyConverterImpl;
 import by.roman.company.DTO.CompanyDTO;
 import by.roman.company.Entity.Company;
+import by.roman.company.Entity.Vacancy;
 import by.roman.company.Repository.CompanyRepository;
+import by.roman.company.Repository.VacancyRepository;
 import by.roman.company.Service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import static by.roman.company.Service.Constant.ONE;
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final VacancyRepository vacancyRepository;
     private final Converter<Company, CompanyDTO> converter = new CompanyConverterImpl();
 
     @Override
@@ -38,10 +41,6 @@ public class CompanyServiceImpl implements CompanyService {
         return converter.toDTO(companyRepository.findById(id).orElse(null));
     }
 
-    @Override
-    public CompanyDTO findCompanyByName(String name) {
-        return converter.toDTO(companyRepository.findCompanyByName(name));
-    }
 
     @Override
     public Page<CompanyDTO> findAllCompanyWithSort(String field, String direction, int pageNumber, int pageSize) {
@@ -52,14 +51,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company findCompanyById(Integer id) {
-
-        return companyRepository.findById(id).orElse(null);
+    public Page<CompanyDTO> findByNameContaining(String name, String field, String direction, int pageNumber, int pageSize) {
+        Sort sort = Sort.Direction.ASC.name().equalsIgnoreCase(direction) ?
+                Sort.by(field).ascending() : Sort.by(field).descending();
+        Page<Company> companies = companyRepository.findByNameContaining(name, PageRequest.of(pageNumber - ONE, pageSize, sort));
+        return companies.map(company -> converter.toDTO(company));
     }
 
+
     @Override
-    public List<Company> findAll() {
-        return companyRepository.findAll();
+    public List<Vacancy> findVaca(Integer id) {
+        return vacancyRepository.findVacancyWithCompany(id);
     }
 
 

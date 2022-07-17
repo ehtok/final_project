@@ -24,37 +24,83 @@
 </nav>
 <div class="container">
     <form th:action="@{/company}" th:object="${company}" method="post" autocomplete="off">
-
+        <div>
+            <h2 th:text="#{h2.edit.company}"></h2>
+        </div>
         <input type="hidden" th:field="*{id}"/>
-
-        <label class="form-label" th:text="#{col.company.name}"/>
-        <input type="text" class="form-control mb-4 col-4" th:field="*{name}">
-
-        <label class="form-label" th:text="#{col.company.size}"/>
-        <input type="text" class="form-control mb-4 col-4" th:field="*{companySize}">
-
-        <div class="form-label">
-            <label class="form-label" th:text="#{col.company.type}"/>
-            <select class="form-select" th:field="*{companyType}">
-                <option th:each="type: ${companyType}"
-                        th:text="${type.name}"
-                        th:value="${type}">
-                </option>
-            </select>
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <label class="form-label" th:text="#{col.company.name}"/>
+                <input id="name" pattern="^[a-zA-Zа-яА-Я]+$"
+                       type="text" class="form-control" required th:field="*{name}">
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <label class="form-label" th:text="#{col.company.size}"/>
+                <input id="size" type="text" pattern="^[0-9]+$"
+                       class="form-control mb-6 col-6" required th:field="*{companySize}">
+            </div>
         </div>
 
-        <label class="form-label" th:text="#{col.company.description}"/>
-        <textarea type="text" class="form-control" th:field="*{description}"></textarea>
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <label class="form-label" th:text="#{col.company.site}"/>
+                <input type="url" class="form-control" required th:field="*{site}">
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <label class="form-label" th:text="#{col.company.mail}"/>
+                <input type="email" class="form-control" required th:field="*{mail}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <label class="form-label" th:text="#{col.company.type}"/>
+                <select class="form-select" th:field="*{companyType}">
+                    <option th:each="type: ${companyType}"
+                            th:text="${type.value}"
+                            th:value="${type}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <label class="form-label" th:text="#{col.company.description}"/>
+                <textarea type="text" class="form-control" rows="7"
+                          th:field="*{description}"></textarea>
+            </div>
+        </div>
 
         </br>
-
+        <hr>
         <button type="submit" class="btn btn-info col-2" th:text="#{button.edit}"></button>
     </form>
-    <hr>
+
 </div>
 <div>
     <a class="btn btn-outline-primary" th:href="@{'?locale=en_US'}" th:text="#{lang.en}"></a>
     <a class="btn btn-outline-primary" th:href="@{'?locale=ru_RU'}" th:text="#{lang.ru}"></a>
 </div>
 </body>
+<script>
+    const size = document.getElementById("size");
+    const name = document.getElementById("name");
+
+    size.addEventListener("input", function (event) {
+        if (size.validity.patternMismatch) {
+            size.setCustomValidity("Используйте числовой формат");
+        } else {
+            size.setCustomValidity("");
+        }
+    });
+
+    name.addEventListener("input", function (event) {
+        if (name.validity.patternMismatch) {
+            name.setCustomValidity("Можно использовать только буквы");
+        } else {
+            name.setCustomValidity("")
+        }
+    });
+</script>
 </html>

@@ -1,10 +1,14 @@
 package by.roman.company.DTO;
 
 import by.roman.company.Entity.Company;
+import by.roman.company.Entity.Technology;
+import by.roman.company.Enum.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,24 +19,26 @@ public class VacancyDTO {
 
     private String name;
 
-    private String workingTime;
+    private WorkingTimeEnum workingTime;
 
     private String experience;
 
-    private String englishLevel;
+    private EnglishLevelEnum englishLevel;
 
-    private String professionLevel;
+    private ProfLevelEnum professionLevel;
 
     private String salary;
 
-    private String status;
+    private StatusEnum status;
 
-    private String location;
+    private LocationEnum location;
 
     private String technology;
 
     private String companyName;
 
     private Company company;
+
+    private Set<Technology> technologies;
 
 }

@@ -2,6 +2,8 @@ package by.roman.company.Enum;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum ProfLevelEnum {
     INTERN("Intern"),
@@ -10,9 +12,16 @@ public enum ProfLevelEnum {
     SENIOR("Senior"),
     LEAD("Team Lead");
 
-    private final String name;
+    private final String value;
 
     ProfLevelEnum(String name) {
-        this.name = name;
+        this.value = name;
     }
+
+//    public static ProfLevelEnum fromString(String name) {
+//        return Arrays.stream(ProfLevelEnum.values())
+//                .filter(profLevelEnum -> profLevelEnum.name().equals(name))
+//                .findFirst()
+//                .orElse(null);
+//    }
 }

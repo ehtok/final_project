@@ -1,5 +1,6 @@
 package by.roman.company.DTO;
 
+import by.roman.company.Enum.CompanyTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,11 @@ public class CompanyDTO {
 
     private Integer companySize;
 
-    private String companyType;
+    private CompanyTypeEnum companyType;
+
+    private String site;
+
+    private String mail;
 
     private String description;
 

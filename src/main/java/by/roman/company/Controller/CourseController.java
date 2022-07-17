@@ -1,8 +1,7 @@
 package by.roman.company.Controller;
 
+import by.roman.company.DTO.CompanyDTO;
 import by.roman.company.DTO.CourseDTO;
-import by.roman.company.Entity.Company;
-import by.roman.company.Entity.Course;
 import by.roman.company.Enum.LocationEnum;
 import by.roman.company.Service.CompanyService;
 import by.roman.company.Service.CourseService;
@@ -49,7 +48,7 @@ public class CourseController {
 
     @GetMapping("/new/{id}")
     public String addVacancyToCompany(Model model, @PathVariable(value = "id") Integer id) {
-        Company company = companyService.findCompanyById(id);
+        CompanyDTO company = companyService.findCompanyDTOById(id);
         model.addAttribute("course", new CourseDTO());
         model.addAttribute("companyId", company);
         model.addAttribute("location", LocationEnum.values());

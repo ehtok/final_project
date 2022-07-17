@@ -8,9 +8,9 @@ public enum WorkingTimeEnum {
     PART("Частичная занятость"),
     REMOTE("Удаленная работа");
 
-    private final String name;
+    private final String value;
 
     WorkingTimeEnum(String name) {
-        this.name = name;
+        this.value = name;
     }
 }

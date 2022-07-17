@@ -1,13 +1,10 @@
 package by.roman.company.Controller;
 
+import by.roman.company.DTO.CompanyDTO;
 import by.roman.company.DTO.VacancyDTO;
-import by.roman.company.Entity.Company;
-import by.roman.company.Entity.Vacancy;
-import by.roman.company.Enum.EnglishLevelEnum;
-import by.roman.company.Enum.ProfLevelEnum;
-import by.roman.company.Enum.StatusEnum;
-import by.roman.company.Enum.WorkingTimeEnum;
+import by.roman.company.Enum.*;
 import by.roman.company.Service.CompanyService;
+import by.roman.company.Service.TechnologyService;
 import by.roman.company.Service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +21,7 @@ import java.util.List;
 public class VacancyController {
     private final VacancyService vacancyService;
     private final CompanyService companyService;
+    private final TechnologyService technologyService;
 
 
     @GetMapping
@@ -50,15 +48,17 @@ public class VacancyController {
         return "vacancy";
     }
 
-    @GetMapping("/new")
-    public String addVacancy(Model model) {
-        List<Company> all = companyService.findAll();
+    @GetMapping("/new/{id}")
+    public String addVacancy(Model model, @PathVariable(value = "id") Integer id) {
+        CompanyDTO company = companyService.findCompanyDTOById(id);
         model.addAttribute("vacancy", new VacancyDTO());
-        model.addAttribute("companyId", all);
+        model.addAttribute("companyId", company);
+        model.addAttribute("location", LocationEnum.values());
         model.addAttribute("status", StatusEnum.values());
         model.addAttribute("workingTime", WorkingTimeEnum.values());
         model.addAttribute("professionLevel", ProfLevelEnum.values());
         model.addAttribute("englishLevel", EnglishLevelEnum.values());
+        model.addAttribute("tech", technologyService.findAllTechnologies());
         return "new_vacancy";
     }
 
@@ -95,8 +95,9 @@ public class VacancyController {
         model.addAttribute("vacancy", vacancy);
         model.addAttribute("status", StatusEnum.values());
         model.addAttribute("workingTime", WorkingTimeEnum.values());
+        model.addAttribute("location", LocationEnum.values());
         model.addAttribute("professionLevel", ProfLevelEnum.values());
-        model.addAttribute("englishLevel", EnglishLevelEnum.values());
+        model.addAttribute("english", EnglishLevelEnum.values());
         return "update_vacancy";
     }
 
@@ -104,6 +105,6 @@ public class VacancyController {
     public String infoVacancy(@PathVariable(value = "id") Integer id, Model model) {
         VacancyDTO vacancy = vacancyService.findVacancyById(id);
         model.addAttribute("vacancy", vacancy);
-        return "info";
+        return "info_vacancy";
     }
 }

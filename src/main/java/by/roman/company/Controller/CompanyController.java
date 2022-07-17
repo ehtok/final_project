@@ -1,14 +1,12 @@
 package by.roman.company.Controller;
 
 import by.roman.company.DTO.CompanyDTO;
-import by.roman.company.DTO.VacancyDTO;
-import by.roman.company.Entity.Company;
-import by.roman.company.Enum.*;
+import by.roman.company.Entity.Vacancy;
+import by.roman.company.Enum.CompanyTypeEnum;
 import by.roman.company.Service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +28,17 @@ public class CompanyController {
                                  String field,
                                  @RequestParam(value = "sortDir", required = false, defaultValue = "ASC")
                                  String sortDir,
-                                 @RequestParam(value = "size", required = false, defaultValue = "5")
-                                 int size) {
-        Page<CompanyDTO> page = companyService.findAllCompanyWithSort(field, sortDir, currentPage, size);
+                                 @RequestParam(value = "size", required = false, defaultValue = "6")
+                                 int size,
+                                 @RequestParam(value = "companyName", required = false, defaultValue = "")
+                                 String companyName) {
+
+        Page<CompanyDTO> page;
+        if (companyName != null) {
+            page = companyService.findByNameContaining(companyName, field, sortDir, currentPage, size);
+        } else {
+            page = companyService.findAllCompanyWithSort(field, sortDir, currentPage, size);
+        }
         int totalPages = page.getTotalPages();
         long totalElement = page.getTotalElements();
         List<CompanyDTO> companyList = page.getContent();
@@ -40,6 +46,7 @@ public class CompanyController {
         model.addAttribute("totalPage", totalPages);
         model.addAttribute("totalElement", totalElement);
         model.addAttribute("sortField", field);
+        model.addAttribute("companyName", companyName);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", Sort.Direction.ASC.name().equals(sortDir) ? "DESC" : "ASC");
         model.addAttribute("companies", companyList);
@@ -72,21 +79,6 @@ public class CompanyController {
         return "redirect:/company";
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String searchCompany(@RequestParam("name") String name, Model model) {
-        model.addAttribute("name", name);
-        String page;
-        try {
-            CompanyDTO company = companyService.findCompanyByName(name);
-            model.addAttribute("company", company);
-            page = "search_company";
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            page = "companyNameError";
-        }
-        return page;
-    }
-
     @GetMapping("/update/{id}")
     public String updateCompany(@PathVariable(value = "id") Integer id, Model model) {
         CompanyDTO company = companyService.findCompanyDTOById(id);
@@ -95,5 +87,16 @@ public class CompanyController {
         return "update_company";
     }
 
+    @GetMapping("/info/{id}")
+    public String infoVacancy(@PathVariable(value = "id") Integer id, Model model) {
+        model.addAttribute("company", companyService.findCompanyDTOById(id));
+        return "info_company";
+    }
 
+    @GetMapping("/bla/{id}")
+    public String vacanciesInfo(@PathVariable(value = "id") Integer id, Model model) {
+        List<Vacancy> vacancyWithCompany = companyService.findVaca(id);
+        model.addAttribute("vacancies", vacancyWithCompany);
+        return "bla";
+    }
 }

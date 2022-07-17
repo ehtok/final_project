@@ -13,8 +13,10 @@
                 id                  int auto_increment not null,
                 company_name        varchar(255) null,
                 company_size        int null,
+                company_site        varchar(255) null,
+                company_mail        varchar(255) null,
                 company_type        varchar(255) null,
-                company_description varchar(255) null,
+                company_description varchar(1000) null,
                 constraint company_pk
                     primary key (id)
             )
@@ -85,10 +87,11 @@
             (
                 id_vacancy    int not null,
                 id_technology int not null,
-                constraint technology_vacancy_fk
-                    foreign key (id_technology) references technology (id),
                 constraint vacancy_technology_fk
-                    foreign key (id_vacancy) references vacancy (id)
+                    foreign key (id_vacancy) references vacancy (id),
+                constraint technology_vacancy_fk
+                    foreign key (id_technology) references technology (id)
+
 
             )
         </sql>

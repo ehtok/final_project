@@ -14,4 +14,7 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Integer> {
     @Query("from Vacancy where name like lower(concat('%', :name, '%')) " +
             "or professionLevel like lower(concat('%', :name, '%'))")
     List<Vacancy> findVacanciesBy(@Param("name") String search);
+
+    @Query("from Vacancy where company.id like :id")
+    List<Vacancy> findVacancyWithCompany(@Param("id") Integer id);
 }

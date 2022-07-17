@@ -7,9 +7,9 @@ public enum StatusEnum {
     ACTIVE("Открыта"),
     OFF("Закрыта");
 
-    private final String name;
+    private final String value;
 
     StatusEnum(String name) {
-        this.name = name;
+        this.value = name;
     }
 }
