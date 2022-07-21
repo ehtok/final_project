@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
@@ -18,15 +19,15 @@
             <a class="nav-item nav-link" th:href="@{/company}" th:text="#{button.company.list}"></a>
             <a class="nav-item nav-link" th:href="@{/vacancy}" th:text="#{button.vacancy.list}"></a>
             <a class="nav-item nav-link" th:href="@{/course}" th:text="#{button.course.list}"></a>
-            <a class="nav-item nav-link" th:href="@{/technology}" th:text="#{button.technology.list}"></a>
+            <div sec:authorize="hasAnyAuthority('ADMIN')">
+                <a class="nav-item nav-link" th:href="@{/technology}" th:text="#{button.technology.list}"></a>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <a class="nav-item nav-link" th:href="@{/user}" th:text="#{col.user.page}"></a>
+            </div>
         </div>
     </div>
 </nav>
-<div>
-    <center>
-        <a class="btn btn-outline-info" th:href="@{/company/search}" th:text="#{button.find.course}"></a>
-    </center>
-</div>
 <div align="center">
     <h1 th:text="#{button.course.list}"></h1>
     <br/>
@@ -45,7 +46,6 @@
                 th:href="@{'/course?page='+${currentPage}+'&sortField=dateFinish&sortDir=' + ${reverseSortDir} }"
                 th:text="#{col.course.finish}"></a>
         </th>
-        <th scope="col" th:text="#{col.course.description}"></th>
         <th scope="col"><a
                 th:href="@{'/course?page='+${currentPage}+'&sortField=location&sortDir=' + ${reverseSortDir} }"
                 th:text="#{col.course.location}"></a>
@@ -59,62 +59,73 @@
         </thead>
         <tbody>
         <tr th:each="course :${courses}">
-            <td th:text="${course.name}"></td>
+            <td>
+                <a th:href="@{/course/info/{id} (id=${course.id})}"
+                   th:text="${course.name}"></a>
+            </td>
             <td th:text="${course.dateStart}"></td>
             <td th:text="${course.dateFinish}"></td>
-            <td th:text="${course.description}"></td>
-            <td th:text="${course.location}"></td>
+            <td th:text="${course.location.value}"></td>
             <td th:text="${course.companyName}"></td>
             <td>
-                <a th:href="@{/course/update/{id}(id=${course.id})}" class="btn btn-outline-primary"
+                <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/course/update/{id}(id=${course.id})}"
+                   class="btn btn-outline-primary"
                    th:text="#{button.edit}"></a>
                 <a th:href="@{/course/delete/{id}(id=${course.id})}" class="btn btn-outline-primary"
                    th:text="#{button.delete}"></a>
+                <div sec:authorize="hasAnyAuthority('USER')">
+                    <a th:if="${course.user.contains(user)==false}" th:href="@{/course/add/{id}(id=${course.id})}"
+                       class="btn btn-outline-primary">Add</a>
+                    <a th:if="${course.user.contains(user)==true}" th:href="@{/course/remove/{id}(id=${course.id})}"
+                       class="btn btn-outline-primary">Remove</a>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 <footer class="panel-footer">
-    <nav aria-label="Page navigation example">
-        Total course [[${totalElement}]]: Page [[${currentPage}]] of [[${totalPage}]]
-        <ul class="pagination">
+    <center>
+        <nav aria-label="Page navigation example">
+            Total course [[${totalElement}]]: Page [[${currentPage}]] of [[${totalPage}]]
+            <ul class="pagination">
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/course?page=1&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
-                   th:text="#{button.page.first}"></a>
-                <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.first}"></span>
-            </li>
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage > 1}"
+                       th:href="@{'/course?page=1&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                       th:text="#{button.page.first}"></a>
+                    <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.first}"></span>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/course?page=' + ${currentPage - 1}
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage > 1}"
+                       th:href="@{'/course?page=' + ${currentPage - 1}
                    +'?sortField='+${sortField}+'&sortDir=' + ${sortDir}}" th:text="#{button.page.previous}"></a>
-                <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.previous}"></span>
-            </li>
+                    <span class="page-link" th:unless="${currentPage > 1}" th:text="#{button.page.previous}"></span>
+                </li>
 
-            <li class="page-link">
+                <li class="page-link">
                     <span th:each="i :${#numbers.sequence(1,totalPage)}">
                     <a th:href="@{'/course?page=' + ${i}+ '&sortField='+${sortField}+'&sortDir=' + ${sortDir}}">[[${i}]]</a>
                     </span>
-            </li>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage < totalPage}"
-                   th:href="@{'/course?page='+${currentPage + 1}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
-                   th:text="#{button.page.next}"></a>
-                <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.next}"></span>
-            </li>
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage < totalPage}"
+                       th:href="@{'/course?page='+${currentPage + 1}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                       th:text="#{button.page.next}"></a>
+                    <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.next}"></span>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage < totalPage}"
-                   th:href="@{'/course?page='+${totalPage}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
-                   th:text="#{button.page.last}"></a>
-                <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.last}"></span>
-            </li>
-        </ul>
-    </nav>
+                <li class="page-item">
+                    <a class="page-link" th:if="${currentPage < totalPage}"
+                       th:href="@{'/course?page='+${totalPage}+'&sortField='+${sortField}+'&sortDir=' + ${sortDir}}"
+                       th:text="#{button.page.last}"></a>
+                    <span class="page-link" th:unless="${currentPage < totalPage}" th:text="#{button.page.last}"></span>
+                </li>
+            </ul>
+        </nav>
+    </center>
 </footer>
 <div>
     <a class="btn btn-outline-primary" th:href="@{'?locale=en_US'}" th:text="#{lang.en}"></a>

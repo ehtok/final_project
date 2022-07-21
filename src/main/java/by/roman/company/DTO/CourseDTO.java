@@ -1,7 +1,8 @@
 package by.roman.company.DTO;
 
 import by.roman.company.Entity.Company;
-import by.roman.company.Entity.Technology;
+import by.roman.company.Entity.User;
+import by.roman.company.Enum.LocationEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,12 +25,13 @@ public class CourseDTO {
 
     private String description;
 
-    private String location;
+    private LocationEnum location;
 
     private String companyName;
 
     private Company company;
 
+    private Set<User> user;
 
 
 }

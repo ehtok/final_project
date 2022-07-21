@@ -2,13 +2,16 @@ package by.roman.company.Controller;
 
 import by.roman.company.DTO.CompanyDTO;
 import by.roman.company.DTO.VacancyDTO;
+import by.roman.company.Entity.User;
 import by.roman.company.Enum.*;
 import by.roman.company.Service.CompanyService;
 import by.roman.company.Service.TechnologyService;
+import by.roman.company.Service.UserService;
 import by.roman.company.Service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,8 @@ public class VacancyController {
     private final TechnologyService technologyService;
 
 
+
+
     @GetMapping
     public String findAllCourse(Model model,
                                 @RequestParam(value = "page", required = false, defaultValue = "1")
@@ -33,8 +38,19 @@ public class VacancyController {
                                 @RequestParam(value = "sortDir", required = false, defaultValue = "ASC")
                                 String sortDir,
                                 @RequestParam(value = "size", required = false, defaultValue = "5")
-                                int size) {
-        Page<VacancyDTO> page = vacancyService.findAllVacancyWithSort(field, sortDir, currentPage, size);
+                                int size,
+                                @RequestParam(value = "value", required = false, defaultValue = "")
+                                String value) {
+
+        Page<VacancyDTO> page;
+
+        if (value != null) {
+            page = vacancyService.findAllVacancyWithValue(field, sortDir, currentPage, size, value);
+        } else {
+            page = vacancyService.findAllVacancyWithSort(field, sortDir, currentPage, size);
+        }
+
+
         int totalPages = page.getTotalPages();
         long totalHorses = page.getTotalElements();
         List<VacancyDTO> vacancyList = page.getContent();
@@ -42,6 +58,7 @@ public class VacancyController {
         model.addAttribute("totalPage", totalPages);
         model.addAttribute("totalHorses", totalHorses);
         model.addAttribute("sortField", field);
+        model.addAttribute("value", value);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", Sort.Direction.ASC.name().equals(sortDir) ? "DESC" : "ASC");
         model.addAttribute("vacancies", vacancyList);
@@ -69,14 +86,6 @@ public class VacancyController {
         return "search_vacancy";
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String searchVacancy(@RequestParam("name") String name, Model model) {
-        model.addAttribute("name", name);
-        List<VacancyDTO> vacancyList = vacancyService.findVacanciesByName(name);
-        model.addAttribute("vacancyList", vacancyList);
-        return "search_vacancy";
-    }
-
     @PostMapping
     public String saveVacancy(VacancyDTO vacancy) {
         vacancyService.saveVacancy(vacancy);
@@ -89,15 +98,18 @@ public class VacancyController {
         return "redirect:/vacancy";
     }
 
+
+
     @GetMapping("/update/{id}")
     public String updateVacancy(@PathVariable(value = "id") Integer id, Model model) {
         VacancyDTO vacancy = vacancyService.findVacancyById(id);
         model.addAttribute("vacancy", vacancy);
+        model.addAttribute("tech", technologyService.findAllTechnologies());
         model.addAttribute("status", StatusEnum.values());
         model.addAttribute("workingTime", WorkingTimeEnum.values());
         model.addAttribute("location", LocationEnum.values());
         model.addAttribute("professionLevel", ProfLevelEnum.values());
-        model.addAttribute("english", EnglishLevelEnum.values());
+        model.addAttribute("englishLevel", EnglishLevelEnum.values());
         return "update_vacancy";
     }
 

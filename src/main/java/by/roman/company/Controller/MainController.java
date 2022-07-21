@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/home")
 public class MainController {
 
 
-    @GetMapping
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "home";
-    }
+//    @GetMapping
+//    public String newUser(Model model) {
+//        model.addAttribute("user", new User());
+//        return "home";
+//    }
 
 }

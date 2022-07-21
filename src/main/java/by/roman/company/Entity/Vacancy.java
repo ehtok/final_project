@@ -46,7 +46,7 @@ public class Vacancy implements Serializable {
     private ProfLevelEnum professionLevel;
 
     @Column(name = "salary")
-    private String salary;
+    private Integer salary;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

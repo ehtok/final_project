@@ -4,8 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -23,8 +22,23 @@ public class Technology implements Serializable {
     @Column(name = "technology_name")
     private String name;
 
-    @ManyToMany(mappedBy = "technologies")
-    private Set<Vacancy> vacancies = new HashSet<>();
+    @Override
+    public String toString() {
+        return "Technology " +
+                "id = " + id +
+                " name = " + name;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Technology technology = (Technology) o;
+        return id.equals(technology.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

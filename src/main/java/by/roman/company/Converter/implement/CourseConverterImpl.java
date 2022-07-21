@@ -3,7 +3,6 @@ package by.roman.company.Converter.implement;
 import by.roman.company.Converter.Converter;
 import by.roman.company.DTO.CourseDTO;
 import by.roman.company.Entity.Course;
-import by.roman.company.Enum.LocationEnum;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,8 +18,9 @@ public class CourseConverterImpl implements Converter<Course, CourseDTO> {
                 .dateStart(String.valueOf(course.getDateStart()))
                 .dateFinish(String.valueOf(course.getDateFinish()))
                 .description(course.getDescription())
-                .location(course.getLocation().getValue())
+                .location(course.getLocation())
                 .companyName(course.getCompany() == null ? null : course.getCompany().getName())
+                .user(course.getUsers())
                 .build();
         return courseDTO;
     }
@@ -39,8 +39,9 @@ public class CourseConverterImpl implements Converter<Course, CourseDTO> {
                 .dateStart(LocalDate.parse(courseDTO.getDateStart()))
                 .dateFinish(LocalDate.parse(courseDTO.getDateFinish()))
                 .description(courseDTO.getDescription())
-                .location(LocationEnum.valueOf(courseDTO.getLocation()))
+                .location(courseDTO.getLocation())
                 .company(courseDTO.getCompany())
+                .users(courseDTO.getUser())
                 .build();
         return course;
     }

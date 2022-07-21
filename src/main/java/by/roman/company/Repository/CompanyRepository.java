@@ -1,6 +1,7 @@
 package by.roman.company.Repository;
 
 import by.roman.company.Entity.Company;
+import by.roman.company.Entity.Vacancy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,10 +14,11 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
-    @Query("from Company where name like %:name%")
-    List<Company> findCompaniesByName(@Param("name") String name);
-
     Page<Company> findByNameContaining(String name, Pageable pageable);
+
+    @Query("from Vacancy where company.id like :id")
+    List<Vacancy> findVacancyWithCompany(@Param("id") Integer id);
+
 
 
 }

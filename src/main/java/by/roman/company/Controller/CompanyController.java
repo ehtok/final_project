@@ -19,7 +19,6 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
 
-
     @GetMapping
     public String findAllCompany(Model model,
                                  @RequestParam(value = "page", required = false, defaultValue = "1")
@@ -32,13 +31,8 @@ public class CompanyController {
                                  int size,
                                  @RequestParam(value = "companyName", required = false, defaultValue = "")
                                  String companyName) {
-
-        Page<CompanyDTO> page;
-        if (companyName != null) {
-            page = companyService.findByNameContaining(companyName, field, sortDir, currentPage, size);
-        } else {
-            page = companyService.findAllCompanyWithSort(field, sortDir, currentPage, size);
-        }
+        Page<CompanyDTO> page = companyService.findCompanyByNamePaginationAndSort
+                (companyName, field, sortDir, currentPage, size);
         int totalPages = page.getTotalPages();
         long totalElement = page.getTotalElements();
         List<CompanyDTO> companyList = page.getContent();
@@ -58,13 +52,6 @@ public class CompanyController {
         model.addAttribute("company", new CompanyDTO());
         model.addAttribute("companyType", CompanyTypeEnum.values());
         return "new_company";
-    }
-
-
-    @GetMapping(value = "/search")
-    public String searchCompanyByName(Model model) {
-        model.addAttribute("company", new CompanyDTO());
-        return "search_company";
     }
 
     @GetMapping("/delete/{id}")

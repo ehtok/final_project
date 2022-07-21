@@ -21,9 +21,8 @@ import static by.roman.company.Service.Constant.ONE;
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
-
     private final CompanyRepository companyRepository;
-    private final VacancyRepository vacancyRepository;
+
     private final Converter<Company, CompanyDTO> converter = new CompanyConverterImpl();
 
     @Override
@@ -41,27 +40,20 @@ public class CompanyServiceImpl implements CompanyService {
         return converter.toDTO(companyRepository.findById(id).orElse(null));
     }
 
-
     @Override
-    public Page<CompanyDTO> findAllCompanyWithSort(String field, String direction, int pageNumber, int pageSize) {
+    public Page<CompanyDTO> findCompanyByNamePaginationAndSort
+            (String name, String field, String direction, int pageNumber, int pageSize) {
         Sort sort = Sort.Direction.ASC.name().equalsIgnoreCase(direction) ?
                 Sort.by(field).ascending() : Sort.by(field).descending();
-        Page<Company> companies = companyRepository.findAll(PageRequest.of(pageNumber - ONE, pageSize, sort));
-        return companies.map(company -> converter.toDTO(company));
-    }
-
-    @Override
-    public Page<CompanyDTO> findByNameContaining(String name, String field, String direction, int pageNumber, int pageSize) {
-        Sort sort = Sort.Direction.ASC.name().equalsIgnoreCase(direction) ?
-                Sort.by(field).ascending() : Sort.by(field).descending();
-        Page<Company> companies = companyRepository.findByNameContaining(name, PageRequest.of(pageNumber - ONE, pageSize, sort));
-        return companies.map(company -> converter.toDTO(company));
+        Page<Company> companies = companyRepository.findByNameContaining
+                (name, PageRequest.of(pageNumber - ONE, pageSize, sort));
+        return companies.map(converter::toDTO);
     }
 
 
     @Override
     public List<Vacancy> findVaca(Integer id) {
-        return vacancyRepository.findVacancyWithCompany(id);
+        return companyRepository.findVacancyWithCompany(id);
     }
 
 

@@ -19,9 +19,9 @@
         <sql>
             insert into vacancy(vacancy_name, working_time, experience, english_level,
                                 profession_level, salary, status, vacancy_location, company_id)
-            values ('Java Developer', 'FULL', '2 years', 'B1', 'MIDDLE', '2000$', 'ACTIVE', 'MINSK', 1),
-                   ('C# Developer', 'REMOTE', '3 years', 'C1', 'JUNIOR', '1000$-2500$', 'ACTIVE', 'GRODNO', 1),
-                   ('QA Engineer', 'PART', '1 years', 'C1', 'JUNIOR', '500$-2000$', 'OFF', 'VITEBSK', 2)
+            values ('Java Developer', 'FULL', '2 years', 'B1', 'MIDDLE', 1000, 'ACTIVE', 'MINSK', 1),
+                   ('C# Developer', 'REMOTE', '3 years', 'C1', 'JUNIOR', 1000, 'ACTIVE', 'GRODNO', 1),
+                   ('QA Engineer', 'PART', '1 years', 'C1', 'JUNIOR', 700, 'OFF', 'VITEBSK', 2)
         </sql>
     </changeSet>
 

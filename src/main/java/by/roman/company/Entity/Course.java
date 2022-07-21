@@ -7,7 +7,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -42,8 +44,8 @@ public class Course implements Serializable {
     @JoinColumn(name = "id_company", updatable = false)
     private Company company;
 
-//    @ManyToMany(mappedBy = "courses")
-//    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "courses",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    private Set<User> users = new HashSet<>();
 
     @Override
     public String toString() {
